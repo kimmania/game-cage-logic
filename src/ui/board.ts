@@ -107,6 +107,7 @@ export function renderBoard(board: BoardElements, state: GameState): void {
 
       if (st.value !== null) {
         const valEl = document.createElement('span');
+        valEl.className = 'cell-value';
         valEl.style.position = 'relative';
         valEl.style.zIndex = '1';
         valEl.textContent = String(st.value);
