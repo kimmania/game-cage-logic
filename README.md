@@ -2,6 +2,8 @@
 
 A KenKen-style logic puzzle built as a PWA for iPad and mobile.
 
+**Play now:** [https://kimmania.github.io/game-cage-logic/](https://kimmania.github.io/game-cage-logic/)
+
 ## Rules
 
 - Fill the grid so every row and column contains each digit exactly once.
