@@ -16,6 +16,19 @@ export function bindControlHandlers(options: {
   document.getElementById('help')?.addEventListener('click', options.onHelp);
   document.getElementById('notes-toggle')?.addEventListener('click', options.onNotesToggle);
   document.getElementById('difficulty')?.addEventListener('change', options.onDifficultyChange);
+
+  const sidebar = document.getElementById('sidebar');
+  const sidebarToggle = document.getElementById('sidebar-toggle');
+  if (sidebar && sidebarToggle) {
+    sidebarToggle.addEventListener('click', () => {
+      const collapsed = sidebar.classList.toggle('collapsed');
+      sidebarToggle.setAttribute('aria-expanded', String(!collapsed));
+      const label = sidebarToggle.querySelector('.toggle-label');
+      if (label) {
+        label.textContent = collapsed ? 'Show tips' : 'Hide tips';
+      }
+    });
+  }
 }
 
 export function createNumpad(size: number, onNumpad: (n: number) => void, onErase: () => void): void {
