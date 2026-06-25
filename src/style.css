@@ -228,6 +228,10 @@ body {
   color: var(--text-dim);
   pointer-events: none;
   user-select: none;
+  z-index: 2;
+  background: var(--cell-bg);
+  border-radius: 2px;
+  padding: 0 2px;
 }
 
 .notes {
