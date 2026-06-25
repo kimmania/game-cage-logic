@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Cage Logic" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <meta
+      name="description"
+      content="A KenKen-style logic puzzle: fill the grid so every cage computes correctly."
+    />
+    <link rel="apple-touch-icon" href="/game-cage-logic/icons/apple-touch-icon.png" />
+    <title>Cage Logic</title>
+  </head>
+  <body>
+    <div id="app">
+      <header class="header">
+        <h1 class="title">🧮 Cage Logic</h1>
+        <div class="status-bar">
+          <span id="difficulty-label" class="difficulty-label">Warm-up</span>
+          <span id="mistakes" class="mistakes">Mistakes: 0</span>
+        </div>
+      </header>
+
+      <section class="controls">
+        <label class="control-group">
+          <span class="sr-only">Difficulty</span>
+          <select id="difficulty" class="difficulty-select">
+            <option value="warmup">Warm-up (4×4)</option>
+            <option value="easy">Easy (5×5)</option>
+            <option value="medium">Medium (6×6)</option>
+            <option value="hard">Hard (7×7)</option>
+            <option value="expert">Expert (8×8)</option>
+          </select>
+        </label>
+        <button type="button" id="new-game" class="btn btn-primary">New Game</button>
+        <button type="button" id="undo" class="btn" disabled>Undo</button>
+        <button type="button" id="reset" class="btn">Reset</button>
+        <button type="button" id="notes-toggle" class="btn notes-toggle">Notes: Off</button>
+        <button type="button" id="help" class="btn">Help</button>
+      </section>
+
+      <div id="win-banner" class="win-banner hidden" role="status">
+        <strong>Puzzle solved!</strong> 🎉
+      </div>
+
+      <main class="game-area">
+        <div id="board" class="board" role="grid" aria-label="Cage Logic board"></div>
+        <div class="numpad" id="numpad"></div>
+        <aside class="sidebar">
+          <div class="goal-panel">
+            <p class="goal-label">Your goal</p>
+            <p class="goal-status">
+              Fill the grid so every row and column contains each digit exactly once, and every cage
+              computes to its target using the shown operation.
+            </p>
+            <p class="goal-detail">
+              Tap a cell to select it, then tap a number key to place it. Tap <strong>Notes</strong>
+              to scribble small candidate digits instead. Numbers that break a row, column, or cage
+              rule are shown in red.
+            </p>
+          </div>
+          <p class="hint">
+            <strong>Tip:</strong> Cages with thick borders must reach their target number using the
+            given operation. Single-cell cages are already solved for you.
+          </p>
+        </aside>
+      </main>
+
+      <footer class="footer">
+        <span id="puzzle-id" class="puzzle-id"></span>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
