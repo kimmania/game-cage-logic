@@ -228,15 +228,11 @@ body {
   color: var(--text-dim);
   pointer-events: none;
   user-select: none;
-  z-index: 2;
-  background: var(--cell-bg);
-  border-radius: 2px;
-  padding: 0 2px;
 }
 
 .notes {
   position: absolute;
-  inset: 1px;
+  inset: 20% 2px 2px 32%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
