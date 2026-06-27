@@ -130,6 +130,34 @@ body {
   color: #fff;
 }
 
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border);
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  background: var(--surface-2);
+}
+
+.win-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.win-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.9rem;
+  padding: 6px 12px;
+}
+
 .notes-toggle.on {
   background: rgba(245, 176, 65, 0.2);
   color: var(--warning);

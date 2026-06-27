@@ -40,6 +40,8 @@ class CageLogicApp {
       onErase: () => this.handleErase(),
     });
 
+    document.getElementById('play-again')?.addEventListener('click', () => void this.newGame());
+
     document.addEventListener('keydown', (e) => this.handleKeydown(e));
 
     const saved = loadSavedGame();
