@@ -76,7 +76,11 @@ export function updateMistakes(count: number): void {
 
 export function showWinBanner(show: boolean): void {
   const el = document.getElementById('win-banner');
-  if (el) el.classList.toggle('hidden', !show);
+  if (el) {
+    el.classList.toggle('hidden', !show);
+    const textEl = el.querySelector('.win-text');
+    if (textEl) textEl.textContent = show ? 'Puzzle solved! 🎉' : 'Puzzle solved! 🎉';
+  }
 }
 
 export function updatePuzzleId(id: string): void {
