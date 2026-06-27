@@ -31,6 +31,7 @@ export interface GameState {
   won: boolean;
   activeCell: { r: number; c: number } | null;
   noteMode: boolean;
+  version: number;
 }
 
 export const DIFFICULTIES: Difficulty[] = [

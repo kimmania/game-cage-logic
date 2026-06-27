@@ -17,6 +17,9 @@ export function loadSavedGame(): GameState | null {
     if (!parsed.grid || !parsed.cages || !parsed.solution || !parsed.puzzleId) {
       return null;
     }
+    if ((parsed.version ?? 1) !== 1) {
+      return null;
+    }
     return parsed;
   } catch {
     return null;

@@ -73,7 +73,7 @@ export function getViolatedCells(state: GameState): Set<string> {
         ok = Math.abs(vals[0] - vals[1]) === cage.target;
       } else if (cage.op === '÷' && vals.length === 2) {
         const [a, b] = vals;
-        ok = (a > b ? a / b : b / a) === cage.target;
+        ok = a === b * cage.target || b === a * cage.target;
       }
       if (!ok) {
         for (const { r, c } of cage.cells) {
@@ -87,13 +87,9 @@ export function getViolatedCells(state: GameState): Set<string> {
         const sum = vals.reduce((a, b) => a + b, 0);
         // Minimum sum from remaining cells is 1 each = remaining
         if (sum + remaining > cage.target) {
-          // impossible to reach target
-          const currentExceeds = sum > cage.target;
-          // If already over, mark
-          if (currentExceeds) {
-            for (const { r, c } of cage.cells) {
-              if (grid[r][c].value !== null) violated.add(`${r},${c}`);
-            }
+          // Even with minimum (1) in all remaining cells, target is exceeded
+          for (const { r, c } of cage.cells) {
+            if (grid[r][c].value !== null) violated.add(`${r},${c}`);
           }
         }
         // Also check if we can ever reach target with max possible remaining
@@ -132,13 +128,4 @@ export function isComplete(state: GameState): boolean {
     }
   }
   return getViolatedCells(state).size === 0;
-}
-
-export function isGiven(state: GameState, r: number, c: number): boolean {
-  for (const cage of state.cages) {
-    if (cage.cells.length === 1 && cage.cells[0].r === r && cage.cells[0].c === c) {
-      return true;
-    }
-  }
-  return false;
 }

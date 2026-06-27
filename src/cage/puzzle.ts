@@ -1,6 +1,15 @@
 import type { Difficulty, GameState, Puzzle } from './types';
 import { RECENT_KEY } from './types';
 
+export function isGiven(state: GameState, r: number, c: number): boolean {
+  for (const cage of state.cages) {
+    if (cage.cells.length === 1 && cage.cells[0].r === r && cage.cells[0].c === c) {
+      return true;
+    }
+  }
+  return false;
+}
+
 const banks: Partial<Record<Difficulty, Puzzle[]>> = {};
 
 export async function fetchBank(difficulty: Difficulty): Promise<Puzzle[]> {
@@ -63,15 +72,14 @@ export function buildGameState(puzzle: Puzzle, difficulty: Difficulty): GameStat
     won: false,
     activeCell: null,
     noteMode: false,
+    version: 1,
   };
 }
 
 export function resetGameState(state: GameState): void {
   for (let r = 0; r < state.size; r++) {
     for (let c = 0; c < state.size; c++) {
-      const given = state.cages.some(
-        (cage) => cage.cells.length === 1 && cage.cells[0].r === r && cage.cells[0].c === c
-      );
+      const given = isGiven(state, r, c);
       state.grid[r][c].value = given ? state.solution[r][c] : null;
       state.grid[r][c].notes = [];
     }

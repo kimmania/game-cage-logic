@@ -62,25 +62,7 @@ function makeExampleBoard(): HTMLElement {
   board.style.gridTemplateColumns = 'repeat(4, 1fr)';
   board.style.gridTemplateRows = 'repeat(4, 1fr)';
 
-  // Cage layout: 3 cages for a simple example
-  // Cage 0: (0,0),(0,1),(1,0),(1,1) target 10 op +
-  // Cage 1: (0,2),(0,3) target 2 op -
-  // Cage 2: (1,2),(1,3),(2,2),(2,3) target 24 op ×
-  // Cage 3: (2,0),(2,1),(3,0),(3,1) target 6 op +
-  // Cage 4: (2,2) is already in cage 2, fix it... hmm
-  // Better simple layout:
-  // C0: [0,0] =1
-  // C1: [0,1],[0,2] target 5 op + -> (2+3)
-  // C2: [0,3],[1,3] target 2 op - -> (4-2)
-  // C3: [1,0],[1,1],[1,2] target 9 op + -> (4+3+2)
-  // C4: [2,0],[3,0] target 2 op - -> (4-2)
-  // C5: [2,1],[3,1] target 3 op - -> (4-1)
-  // C6: [2,2],[2,3] target 2 op ÷ -> (4/2)
-  // C7: [3,2],[3,3] target 2 op ÷ -> (4/2)
-  // Hard to show a full valid KenKen in a tiny example without solver...
-  // Just show an abstract representation.
-
-  const cells = [] as HTMLElement[];
+  const cells: HTMLElement[] = [];
   for (let i = 0; i < 16; i++) {
     const cell = document.createElement('div');
     cell.className = 'tutorial-cell';
@@ -88,19 +70,20 @@ function makeExampleBoard(): HTMLElement {
     cells.push(cell);
   }
 
-  // Apply cage borders and labels for a conceptual example
   const setBorder = (idx: number, cls: string) => cells[idx].classList.add(cls);
+
   // Cage A: top-left 2x2, target 10+
   [0, 1, 4, 5].forEach((i) => {
-    setBorder(i, 'cage-top');
-    setBorder(i, 'cage-left');
-    setBorder(i, 'cage-right');
-    setBorder(i, 'cage-bottom');
+    if (i < 4) setBorder(i, 'cage-top');
+    if (i >= 4) setBorder(i, 'cage-bottom');
+    if (i % 4 === 0) setBorder(i, 'cage-left');
+    if (i % 4 === 1) setBorder(i, 'cage-right');
   });
-  // Remove internal borders for Cage A
-  // top edge 0,1 already top; bottom edge 4,5 already bottom; left edge 0,4 already left; right edge 1,5 already right
-  // actually easier: just show the labels and mention thick borders represent cages
-  
+  const label = document.createElement('span');
+  label.className = 'cage-label';
+  label.textContent = '10+';
+  cells[0].appendChild(label);
+
   const cap = document.createElement('p');
   cap.style.cssText = 'margin:0;color:var(--text-dim);font-size:0.9em;text-align:center;max-width:300px;';
   cap.textContent =

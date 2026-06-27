@@ -1,5 +1,5 @@
 import type { CellState, GameState } from './cage/types';
-import { fetchBank, resetGameState, startNewGame } from './cage/puzzle';
+import { fetchBank, isGiven, resetGameState, startNewGame } from './cage/puzzle';
 import { clearSavedGame, loadSavedGame, saveGame } from './cage/storage';
 import { getViolatedCells, isComplete } from './cage/validator';
 import { bindBoardInteractions, createBoard, renderBoard } from './ui/board';
@@ -107,7 +107,7 @@ class CageLogicApp {
   private handleNumpad(n: number): void {
     if (!this.state || this.state.won || !this.state.activeCell) return;
     const { r, c } = this.state.activeCell;
-    if (this.isGiven(r, c)) return;
+    if (isGiven(this.state, r, c)) return;
 
     this.stashUndo();
     const cell = this.state.grid[r][c];
@@ -129,7 +129,7 @@ class CageLogicApp {
   private handleErase(): void {
     if (!this.state || this.state.won || !this.state.activeCell) return;
     const { r, c } = this.state.activeCell;
-    if (this.isGiven(r, c)) return;
+    if (isGiven(this.state, r, c)) return;
     this.stashUndo();
     this.state.grid[r][c].value = null;
     this.state.grid[r][c].notes = [];
@@ -143,15 +143,12 @@ class CageLogicApp {
     this.refresh();
   }
 
-  private isGiven(row: number, col: number): boolean {
-    return this.state?.cages.some(
-      (cage) => cage.cells.length === 1 && cage.cells[0].r === row && cage.cells[0].c === col,
-    ) ?? false;
-  }
-
   private handleKeydown(e: KeyboardEvent): void {
     if (document.querySelector('#help-dialog')) {
-      if (e.key === 'Escape') closeHelp();
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeHelp();
+      }
       return;
     }
 
@@ -165,17 +162,20 @@ class CageLogicApp {
 
     // Toggle notes with N key
     if (e.key === 'n' || e.key === 'N') {
+      e.preventDefault();
       this.handleNotesToggle();
       return;
     }
 
     if (e.key === 'Backspace' || e.key === 'Delete') {
+      e.preventDefault();
       this.handleErase();
       return;
     }
 
     const num = parseInt(e.key, 10);
     if (!Number.isNaN(num) && num >= 1 && num <= this.state.size) {
+      e.preventDefault();
       this.handleNumpad(num);
       return;
     }
@@ -184,15 +184,19 @@ class CageLogicApp {
     let { r, c } = this.state.activeCell;
     switch (e.key) {
       case 'ArrowUp':
+        e.preventDefault();
         r = Math.max(0, r - 1);
         break;
       case 'ArrowDown':
+        e.preventDefault();
         r = Math.min(this.state.size - 1, r + 1);
         break;
       case 'ArrowLeft':
+        e.preventDefault();
         c = Math.max(0, c - 1);
         break;
       case 'ArrowRight':
+        e.preventDefault();
         c = Math.min(this.state.size - 1, c + 1);
         break;
       default:

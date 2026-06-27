@@ -1,5 +1,6 @@
 import type { GameState } from '../cage/types';
-import { getViolatedCells, isGiven } from '../cage/validator';
+import { getViolatedCells } from '../cage/validator';
+import { isGiven } from '../cage/puzzle';
 
 interface BoardElements {
   container: HTMLElement;
@@ -47,6 +48,10 @@ function ensureSize(board: BoardElements, size: number): void {
 
 export function renderBoard(board: BoardElements, state: GameState): void {
   ensureSize(board, state.size);
+  const noteCols = state.size <= 4 ? 2 : 3;
+  const noteRows = Math.ceil(state.size / noteCols);
+  board.container.style.setProperty('--note-cols', String(noteCols));
+  board.container.style.setProperty('--note-rows', String(noteRows));
   const cageMap = getCageMap(state);
   const violated = getViolatedCells(state);
 
@@ -108,8 +113,6 @@ export function renderBoard(board: BoardElements, state: GameState): void {
       if (st.value !== null) {
         const valEl = document.createElement('span');
         valEl.className = 'cell-value';
-        valEl.style.position = 'relative';
-        valEl.style.zIndex = '1';
         valEl.textContent = String(st.value);
         cell.appendChild(valEl);
       } else if (st.notes.length > 0) {
@@ -120,9 +123,6 @@ export function renderBoard(board: BoardElements, state: GameState): void {
           noteSpan.className = 'note';
           noteSpan.textContent = st.notes.includes(n) ? String(n) : '';
           notesEl.appendChild(noteSpan);
-          if (n % 3 === 0) {
-            // grid naturally flows, nothing needed
-          }
         }
         cell.appendChild(notesEl);
       }
